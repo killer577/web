@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Details</title>
+    <link rel="stylesheet" href="registers.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Focus on the "Name" input field when the page loads
+            const nameInput = document.getElementById("comp-name");
+            nameInput.focus();
+
+            // Capitalize the first letter of the "Name" input
+            nameInput.addEventListener("input", function() {
+                const words = nameInput.value.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1));
+                nameInput.value = words.join(' ');
+            });
+
+            // Set the default value of the "Date" input to the current date
+            const dateInput = document.getElementById("date");
+            const currentDate = new Date().toISOString().split('T')[0];
+            dateInput.value = currentDate;
+
+            // Get all form inputs to enable arrow key navigation
+            const formElements = document.querySelectorAll("input, select, textarea");
+
+            formElements.forEach((element, index) => {
+                element.addEventListener("keydown", function(event) {
+                    if (event.key === "ArrowDown") {
+                        event.preventDefault();
+                        if (index < formElements.length - 1) {
+                            formElements[index + 1].focus();
+                        }
+                    } else if (event.key === "ArrowUp") {
+                        event.preventDefault();
+                        if (index > 0) {
+                            formElements[index - 1].focus();
+                        }
+                    }
+                });
+            });
+
+            // Form submission handler to validate inputs
+const complaintForm = document.getElementById("complaintForm");
+complaintForm.addEventListener("submit", function(event) {
+    // Prevent form submission
+    event.preventDefault();
+
+    // Collect form data
+    const formData = new FormData(complaintForm);
+
+    // Check if an image was uploaded
+    const imageInput = document.getElementById("complaintImage");
+    if (imageInput.files.length === 0) {
+        formData.append("complaintImage", "none");
+    }
+
+    // Send an AJAX request
+    fetch('submit_complaint.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data); // Show notification message
+        if (data.includes("Complaint registered successfully")) {
+            window.location.href = "send_otp.php"; // Redirect on success
+        } else {
+            // Optionally handle other responses
+            console.error("Unexpected response:", data);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+        });
+    </script>
+</head>
+<body>
+    <nav class="navbar">
+        <h2>Complaint Form</h2>
+    </nav>
+    <div class="main-container">
+        <div class="left-container">
+            <h3>Fill Your Details</h3>
+            <form id="complaintForm" autocomplete="off">
+                <label for="comp-name">Name:</label>
+                <input type="text" id="comp-name" name="comp-name" required>
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="">Select your gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" required>
+
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" rows="3" required></textarea>
+
+                <label for="phone">Phone No.:</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="email">Email ID:</label>
+                <input type="email" id="email" name="email" required>
+        </div>
+        <div class="right-container">
+            <h3>Fill Complaint Details</h3>
+            <label for="subject">Subject:</label>
+            <select style="margin-top: 6px;" id="subject" name="subject" required>
+                <option value="Service">Service</option>
+                <option value="Product">Complaint</option>
+                <option value="Product">Request</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="date" class="label-margin">Date:</label>
+            <input type="date" id="date" name="date" style="margin-top: 6px;" required>
+
+            <label for="place" class="label-margin">Place:</label>
+            <textarea id="place" name="place" rows="2" style="margin-top: 7px;" required></textarea>
+
+            <!-- New Image Upload Input -->
+            <label for="complaintImage" class="label-margin">Upload Image:</label>
+            <input type="file" id="complaintImage" name="complaintImage" accept="image/*">
+
+            <label for="description" class="label-margin">Description:</label>
+            <textarea id="description" name="description" rows="2" style="margin-top: 7px;" required></textarea>
+
+            <button type="submit">Register</button>
+        </div>
+        </form>
+    </div>
+    <footer>
+        <p style="padding-bottom: 10px;">&copy; 2024 Complaint Management System. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,158 @@
+/* Reset some default styles */
+body, h1, p, form, input, button {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif; /* Modern and clean font */
+}
+
+body {
+    background-image: linear-gradient(to right, #f5f5f5, #e0e0e0); /* Subtle gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't affect width calculations */
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+  }
+.container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: box-shadow 0.2s ease; /* Smooth transition for hover effect */
+    text-align: left; /* Align text elements to the left */
+}
+
+.container:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); /* Slightly more shadow on hover */
+}
+
+.login-form h1 {
+    font-size: 1.6rem; /* Adjusted font size for better readability */
+    font-weight: 400; /* Light font weight for a modern look */
+    margin-bottom: 1.5rem;
+    color: #202124; /* Darker color for contrast */
+}
+
+.login-form p {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem; /* Adjusted size for readability */
+    color: #5f6368; /* Slightly lighter color for secondary text */
+}
+
+.input-group {
+    margin-bottom: 1.5rem; /* Consistent margin for spacing */
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    color: #202124;
+    margin-bottom: 0.4rem;
+    font-weight: 500; /* Improved visibility */
+    text-align: left; /* Align label text to the left */
+    width: 100%; /* Ensure label takes full width for proper alignment */
+}
+
+.input-group input {
+    width: 90%;
+    padding: 0.9rem 1rem; /* Comfortable padding for input fields */
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #202124;
+    background-color: #ffffff; /* Clean white background for inputs */
+    transition: border-color 0.3s ease, background-color 0.3s ease; /* Smooth transition for focus and hover */
+}
+
+.input-group input:focus {
+    border-color: #1a73e8;
+    outline: none;
+    background-color: #fff; /* Background stays white on focus */
+    box-shadow: 0 1px 4px rgba(26, 115, 232, 0.2); /* Enhanced focus effect */
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* Space between buttons */
+}
+
+.buttons button {
+    flex: 1; /* Make buttons equal width */
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease; /* Smooth transitions */
+    text-align: center; /* Center text within the button */
+}
+
+.cancelbtn {
+    background-color: #f1f3f4;
+    color: #202124;
+    font-weight: 500;
+}
+
+.cancelbtn:hover {
+    background-color: #e8eaed;
+    transform: scale(1.02); /* Slightly enlarges button on hover */
+}
+
+.loginbtn, .signupbtn {
+    background-color: #1a73e8;
+    color: #fff;
+    font-weight: 500;
+}
+
+.loginbtn:hover, .signupbtn:hover {
+    background-color: #1669c1;
+    transform: scale(1.02); /* Slightly enlarges button on hover */
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem; /* Reduced padding for smaller screens */
+    }
+
+    .login-form h1 {
+        font-size: 1.4rem; /* Adjust heading size on smaller screens */
+    }
+
+    .input-group input {
+        padding: 0.8rem; /* Slightly reduced padding for smaller screens */
+    }
+
+    .buttons {
+        flex-direction: column; /* Stack buttons vertically on smaller screens */
+    }
+
+    .buttons button {
+        width: 100%;
+        margin-bottom: 0.5rem; /* Add margin between stacked buttons */
+    }
+
+    .buttons button:last-child {
+        margin-bottom: 0; /* Remove margin for the last button */
+    }
+}
+

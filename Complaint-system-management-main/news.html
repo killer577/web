@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/> <!-- AOS CSS -->
+    <title>Admin Dashboard</title>
+    <style>
+        /* General body style */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f3f3f3 25%, #e0e0e0 100%);
+            transition: background 0.3s ease;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Left section of the navbar */
+        .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-left h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+            text-align: center;
+            flex: 1;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #f3f3f3;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s ease;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding-top: 70px;
+        }
+
+        .sidebar-toggle {
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-right: 20px;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .sidebar a {
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            color: #333;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        /* Sidebar open state */
+        .sidebar-open {
+            left: 0;
+        }
+
+        /* Navbar right section */
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Logout icon styling */
+        .logout {
+            color: #333;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logout:hover {
+            color: #1a73e8;
+        }
+
+        /* Form container styling */
+        .form-container, .image-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        h4 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        textarea, input[type="file"] {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            font-size: 1rem;
+        }
+
+        /* Button container for aligning buttons */
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* Ensures buttons are on opposite ends */
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Submit button styling */
+        button[type="submit"], .remove-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Remove button styling */
+        .remove-btn {
+            background-color: #dc3545; /* Red color for the Remove button */
+            color: #fff;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        /* CSS Animations */
+        .button-container button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar-left h1 {
+                font-size: 1.2rem;
+            }
+
+            .logout {
+                font-size: 1.2rem;
+            }
+
+            .form-container, .image-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+
+            textarea {
+                height: 150px;
+            }
+
+            button {
+                padding: 0.5rem 1rem;
+            }
+            textarea, input[type="file"] {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="index.php">Home</a>
+        <a href="send_otp.php">User Interface</a>
+        <a href="sample.html">Complaint Form</a>
+        <a href="news.html">News</a>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <i class='bx bx-menu sidebar-toggle' id="sidebarToggle"></i>
+            <h1>Admin Dashboard</h1>
+        </div>
+        <div class="navbar-right">
+            <a href="#" onclick="logout()" class="logout" title="Logout">
+                <i class='bx bx-log-out'></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="form-container" style="margin-top: 60px;" data-aos="fade-up">
+        <h4>News Update</h4>
+        <form action="submit_news.php" method="POST">
+            <textarea name="news_content" placeholder="Enter news update here..." rows="6" required></textarea>
+            <br>
+            <div class="button-container">
+                <button type="submit">Submit</button>
+                <button type="button" class="remove-btn" onclick="removeContent()">Remove</button>
+            </div>
+        </form>
+    </div>
+    <div class="image-container" data-aos="fade-up" data-aos-delay="200">
+        <h4>Image update</h4>
+        <!-- New Image Upload Input -->
+        <form action="upload_image.php" method="POST" enctype="multipart/form-data">
+    <input type="file" id="complaintImage" name="complaintImage" accept="image/*" required>
+    <div class="button-container">
+        <button type="submit">Add Image</button>
+        <button type="button" class="remove-btn" onclick="deleteAllImages()">Delete</button>
+    </div>
+</form>
+
+    </div>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> <!-- AOS JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init(); // Initialize AOS
+
+            // Toggle Sidebar
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar-open');
+                this.classList.toggle('bx-menu');
+                this.classList.toggle('bx-x');
+            });
+
+            // Close sidebar when a link is clicked
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                link.addEventListener('click', function() {
+                    sidebar.classList.remove('sidebar-open');
+                    sidebarToggle.classList.add('bx-menu');
+                    sidebarToggle.classList.remove('bx-x');
+                });
+            });
+
+            // Handle news update form submission
+            document.querySelector('form[action="submit_news.php"]').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                const formData = new FormData(this);
+
+                fetch('submit_news.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result); // Show the server response
+                    // Optionally clear the form or redirect
+                    document.querySelector('form[action="submit_news.php"]').reset();
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+            // Handle image upload form submission
+            document.querySelector('form[action="upload_image.php"]').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                const formData = new FormData(this);
+
+                fetch('upload_image.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result); // Show the server response
+                    // Optionally clear the form
+                    document.querySelector('form[action="upload_image.php"]').reset();
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+        });
+
+        function removeContent() {
+            if (confirm('Are you sure you want to remove all content?')) {
+                fetch('remove_all_news.php')
+                    .then(response => response.text())
+                    .then(result => {
+                        alert(result);
+                        // Optionally, you can reload the page or clear the form
+                        window.location.reload();
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
+
+        function deleteAllImages() {
+            if (confirm('Are you sure you want to delete all images?')) {
+                fetch('delete_all_images.php')
+                    .then(response => response.text())
+                    .then(result => {
+                        alert(result);
+                        // Optionally, you can reload the page
+                        window.location.reload();
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
+
+        // Logout functionality
+        function logout() {
+            fetch('logout.php')
+                .then(response => response.text())
+                .then(result => {
+                    window.location.href = 'login.html'; // Redirect to login page after logout
+                })
+                .catch(error => console.error('Error logging out:', error));
+        }
+    </script>
+        </body>
+        </html>
+
+           
